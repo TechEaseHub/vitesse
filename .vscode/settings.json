@@ -1,0 +1,44 @@
+{
+
+  // 启用 ESLint 扁平化配置支持
+  "eslint.experimental.useFlatConfig": true,
+
+  // 禁用默认格式化工具
+  "prettier.enable": false,
+  "editor.formatOnSave": false,
+
+  // 自动修复
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit",
+    "source.organizeImports": "never"
+  },
+
+  // 在 IDE 中静默样式规则，但仍然自动修复它们
+  "eslint.rules.customizations": [
+    { "rule": "style/*", "severity": "off" },
+    { "rule": "*-indent", "severity": "off" },
+    { "rule": "*-spacing", "severity": "off" },
+    { "rule": "*-spaces", "severity": "off" },
+    { "rule": "*-order", "severity": "off" },
+    { "rule": "*-dangle", "severity": "off" },
+    { "rule": "*-newline", "severity": "off" },
+    { "rule": "*quotes", "severity": "off" },
+    { "rule": "*semi", "severity": "off" }
+  ],
+
+  // 以下配置为可选项
+  // 建议放在项目的 `.vscode/settings.json` 中
+  // 避免与不支持所有格式的不同 ESLint 配置产生冲突
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+    "vue",
+    "html",
+    "markdown",
+    "json",
+    "jsonc",
+    "yaml"
+  ]
+}

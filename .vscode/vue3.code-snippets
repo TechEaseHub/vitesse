@@ -1,0 +1,28 @@
+{
+  "Print Vue3 SFC": {
+    "scope": "vue",
+    "prefix": "v3",
+    "body": [
+      "<script lang=\"ts\" setup>",
+      "",
+      "</script>\n",
+      "<template>",
+      "  <div>",
+      "    $2",
+      "  </div>",
+      "</template>\n",
+      "<style lang=\"scss\" scoped>",
+      "",
+      "</style>\n",
+    ],
+  },
+  "v-for template loop (custom count)": {
+    "prefix": "vfor",
+    "body": [
+      "<template v-for=\"i in ${1:100}\" :key=\"i\">",
+      "  <div>{{ i }}</div>",
+      "</template>"
+    ],
+    "description": "v-for 模板循环，可自定义次数"
+  }
+}
