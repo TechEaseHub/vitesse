@@ -40,5 +40,18 @@
     "json",
     "jsonc",
     "yaml"
+  ],
+
+  "chat.mcp.serverSampling": {
+    "vitesse/.vscode/mcp.json: context7": {
+      "allowedModels": [
+        "github.copilot-chat/gpt-4.1"
+      ]
+    }
+  },
+  "github.copilot.chat.codeGeneration.instructions": [
+    {
+      "file": "./.vscode/daisyui-zh-CN.md"
+    }
   ]
 }

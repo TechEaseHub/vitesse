@@ -14,12 +14,14 @@
   },
   "dependencies": {
     "@vueuse/core": "catalog:frontend",
+    "daisyui": "catalog:frontend",
     "pinia": "catalog:dev",
     "pinia-plugin-persistedstate": "catalog:dev",
     "vue": "catalog:frontend",
     "vue-router": "catalog:frontend"
   },
   "devDependencies": {
+    "@ameinhardt/unocss-preset-daisy": "catalog:build",
     "@antfu/eslint-config": "catalog:dev",
     "@iconify/json": "catalog:build",
     "@types/node": "catalog:dev",
