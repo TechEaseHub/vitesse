@@ -1,5 +1,13 @@
 <script setup lang="ts">
-const params = useRoute('/hi/[name]').params
+definePage({
+  meta: {
+    title: 'HiName',
+    icon: 'i-mdi:account-group',
+    // layout: 'DefaultLayout',
+  },
+})
+
+const params = useRoute('HiName').params
 const router = useRouter()
 </script>
 

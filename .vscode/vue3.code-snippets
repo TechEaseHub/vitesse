@@ -23,6 +23,5 @@
       "  <div>{{ i }}</div>",
       "</template>"
     ],
-    "description": "v-for 模板循环，可自定义次数"
   }
 }

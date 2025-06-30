@@ -13,7 +13,7 @@ import IconsResolver from 'unplugin-icons/resolver'
 import Icons from 'unplugin-icons/vite'
 // https://github.com/antfu/vite-plugin-components
 import Components from 'unplugin-vue-components/vite'
-import { VueRouterAutoImports } from 'unplugin-vue-router'
+import { getPascalCaseRouteName, VueRouterAutoImports } from 'unplugin-vue-router'
 // https://github.com/posva/unplugin-vue-router
 import VueRouter from 'unplugin-vue-router/vite'
 import { defineConfig, loadEnv } from 'vite'
@@ -32,7 +32,7 @@ export default defineConfig(({ mode }) => {
 
     resolve: {
       alias: {
-        '~/': fileURLToPath(new URL('./src', import.meta.url)),
+        '~': fileURLToPath(new URL('./src', import.meta.url)),
       },
     },
 
@@ -41,6 +41,7 @@ export default defineConfig(({ mode }) => {
 
       VueRouter({
         exclude: ['src/pages/components/**/*', '**/*.bak.vue'],
+        getRouteName: node => getPascalCaseRouteName(node),
         dts: 'types/typed-router.d.ts',
       }),
 
@@ -73,20 +74,20 @@ export default defineConfig(({ mode }) => {
 
       UnoCSS(),
 
-      VueDevTools(),
+      ...(env.VITE_DEBUG === 'true' ? [VueDevTools()] : []),
     ],
 
     server: {
       host: '0.0.0.0',
       hmr: true,
       proxy: {
-        [env.VITE_BASE_API]: {
+        [env.VITE_SERVER_PROXY]: {
           // 代理地址
-          target: env.VITE_PROXY_URL,
+          target: env.VITE_SERVER_BASEURL,
           // 是否跨域
           changeOrigin: true,
           // 重写路径
-          rewrite: path => path.replace(new RegExp(`^${env.VITE_BASE_API}`), ''),
+          rewrite: path => path.replace(new RegExp(`^${env.VITE_SERVER_PROXY}`), ''),
         },
       },
     },

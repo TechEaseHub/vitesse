@@ -1,7 +1,9 @@
 <script setup lang="ts">
 definePage({
   meta: {
-    layout: 'home',
+    title: '仪表盘',
+    icon: 'i-mdi:view-dashboard',
+    order: -99,
   },
 })
 
