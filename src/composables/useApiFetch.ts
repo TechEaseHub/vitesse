@@ -10,7 +10,6 @@ interface ApiResponse<T> {
   message?: string
   data: T
 }
-console.log('baseUrl', import.meta.env.VITE_SERVER_PROXY)
 
 export const useApiFetch = createFetch({
   baseUrl: import.meta.env.VITE_SERVER_PROXY,
@@ -19,23 +18,12 @@ export const useApiFetch = createFetch({
     timeout: 10000,
 
     beforeFetch(ctx: BeforeFetchContext) {
-      // console.log('beforeFetch', ctx)
-      const { url, options, cancel } = ctx
-
-      return {
-        url,
-        options: {
-          ...options,
-          headers: {
-            Authorization: 'Bearer xxx',
-          },
-        },
-        cancel,
-      }
+      fetchEvents.onBefore.trigger(ctx)
+      return ctx
     },
 
     afterFetch(ctx: AfterFetchContext<ApiResponse<unknown>>) {
-      // console.log('afterFetch', ctx)
+      fetchEvents.onAfter.trigger(ctx)
       const { data: raw, response, context, execute } = ctx
 
       if (raw && typeof raw === 'object') {
