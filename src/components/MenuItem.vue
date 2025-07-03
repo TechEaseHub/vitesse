@@ -11,33 +11,21 @@ const { item, activePath, level: menuLevel = 1 } = defineProps<{
   level?: number
 }>()
 
-const isOpen = ref(false)
+const [isOpen, toggleOpen] = useToggle()
 
-const isActive = computed(() => item.children && isActiveGroup(item.path, activePath))
+const isActive = computed(() => isMenuActive(item, activePath))
 
-/**
- * 判断当前路径是否属于某分组（严格匹配分组路径）
- * @param path 分组路径
- * @param active 当前激活路径
- * @returns 是否属于该分组
- */
-function isActiveGroup(path: string, active: string) {
-  if (active === path)
+function isMenuActive(menu: MenuItem, active: string): boolean {
+  if (menu.path === active)
     return true
-  if (!active.startsWith(path))
-    return false
-  // 只展开严格属于该分组的路径
-  const nextChar = active.slice(path.length, path.length + 1)
-  return nextChar === '/'
-}
-
-function toggleOpen() {
-  isOpen.value = !isOpen.value
+  if (menu.children)
+    return menu.children.some(child => isMenuActive(child, active))
+  return false
 }
 
 // 监听 activePath 变化，自动展开/收起分组菜单
 watch(() => activePath, (val) => {
-  if (item.children && isActiveGroup(item.path, val)) {
+  if (item.children && isMenuActive(item, val)) {
     isOpen.value = true
   }
   else {
@@ -69,21 +57,27 @@ const [DefineMenuContent, ReuseMenuContent] = createReusableTemplate<{
         class="px-4 py-2 flex gap-2 cursor-pointer select-none transition-colors duration-200 items-center relative"
         :class="[isActive ? 'bg-blue-50 text-blue-700 font-semibold' : 'hover:bg-gray-100']"
         tabindex="0"
-        @click="toggleOpen"
-        @keydown.enter.prevent="toggleOpen"
-        @keydown.space.prevent="toggleOpen"
+        @click="toggleOpen()"
+        @keydown.enter.prevent="toggleOpen()"
+        @keydown.space.prevent="toggleOpen()"
       >
         <ReuseMenuContent
           :icon="item.icon"
           :title="item.title"
-          :extra="h('i', { class: `text-base text-gray-400 transition-transform duration-200 ${isOpen ? 'i-mdi:chevron-down rotate-180' : 'i-mdi:chevron-down'}` })"
+          :extra="h('i', {
+            class: [
+              'text-base text-gray-400 transition-transform duration-200',
+              isOpen ? 'i-mdi:chevron-up' : 'i-mdi:chevron-down',
+            ].join(' '),
+          })
+          "
         />
       </div>
 
       <transition name="fade-slide">
         <ul
           v-show="isOpen"
-          class="ml-4 border-l border-gray-100 rounded-none bg-transparent shadow-none"
+          class="m-1 ml-4 border border-blue-200 rounded-md overflow-hidden space-y-1"
         >
           <MenuItem
             v-for="child in item.children"
@@ -99,7 +93,7 @@ const [DefineMenuContent, ReuseMenuContent] = createReusableTemplate<{
     <router-link
       v-else
       :to="item.path"
-      class="menu-item px-4 py-2 flex gap-2 transition-colors duration-200 items-center relative"
+      class="px-4 py-2 flex gap-2 select-none transition-colors duration-200 items-center relative"
       :class="[activePath === item.path ? 'bg-blue-100 text-blue-700 font-semibold' : 'hover:bg-gray-100']"
     >
       <ReuseMenuContent
