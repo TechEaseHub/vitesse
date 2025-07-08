@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import { computed } from 'vue'
 import { useRouter } from 'vue-router'
-import MenuItem from '~/components/MenuItem.vue'
-import { generateMenus } from '~/composables/menuGenerator'
+
+import MenuItem from './components/MenuItem.vue'
+import { generateMenus } from './utils/menuGenerator'
 
 const router = useRouter()
 const routes = router.getRoutes()
-const menuData = computed(() => generateMenus(routes))
-const activePath = computed(() => router.currentRoute.value.path)
 
+const menuData = computed(() => generateMenus(routes, ['manager']))
+
+console.log('routes', routes)
 console.log('Menu Data:', menuData.value)
-console.log('Active Path:', activePath.value)
 </script>
 
 <template>
@@ -23,7 +23,7 @@ console.log('Active Path:', activePath.value)
       </div>
       <div class="flex-1 overflow-y-auto">
         <ul class="space-y-1">
-          <MenuItem v-for="item in menuData" :key="item.path" :item="item" :active-path="activePath" />
+          <MenuItem v-for="item in menuData" :key="item.path" :item="item" />
         </ul>
       </div>
     </aside>
@@ -45,13 +45,11 @@ console.log('Active Path:', activePath.value)
         </div>
       </header>
       <!-- 主内容区 -->
-      <main class="p-4 text-center flex-1 overflow-auto">
+      <main class="p-4 flex-1 overflow-auto">
         <router-view />
       </main>
     </div>
   </div>
 </template>
 
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>

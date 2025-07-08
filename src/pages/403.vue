@@ -2,7 +2,7 @@
 definePage({
   meta: {
     layout: 'page',
-    title: '页面不存在',
+    title: '禁止访问',
     hideInMenu: true,
   },
 })
@@ -11,16 +11,16 @@ definePage({
 <template>
   <section class="px-6 bg-white flex min-h-screen items-center justify-center dark:bg-gray-900">
     <div class="text-center max-w-lg w-full">
-      <div class="text-blue-600 mx-auto mb-8 rounded-full bg-blue-100 flex h-16 w-16 items-center justify-center dark:bg-gray-800">
-        <i-mdi-alert-circle-outline class="h-10 w-10" />
+      <div class="text-red-600 mx-auto mb-8 rounded-full bg-red-100 flex h-16 w-16 items-center justify-center dark:bg-gray-800">
+        <i-mdi-shield-alert-outline class="h-10 w-10" />
       </div>
 
       <h1 class="text-4xl text-gray-900 font-semibold mb-4 dark:text-white">
-        Not Found
+        Forbidden
       </h1>
 
       <p class="text-gray-600 mb-8 dark:text-gray-400">
-        抱歉，您访问的页面不存在
+        抱歉，您没有权限访问此页面
       </p>
 
       <div class="flex flex-col gap-4 justify-center sm:flex-row sm:gap-6">
@@ -34,7 +34,7 @@ definePage({
         </button>
 
         <button
-          class="text-white px-6 py-3 rounded-lg bg-blue-600 cursor-pointer transition dark:bg-blue-600 hover:bg-blue-700 dark:hover:bg-blue-500"
+          class="text-white px-6 py-3 rounded-lg bg-red-600 cursor-pointer transition dark:bg-red-600 hover:bg-red-700 dark:hover:bg-red-500"
           type="button"
           @click="$router.push('/')"
         >

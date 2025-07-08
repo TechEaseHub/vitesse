@@ -3,13 +3,20 @@ definePage({
   meta: {
     title: '测试页面',
     icon: 'i-mdi:account-group',
-    // layout: 'DefaultLayout',
+    menuParent: '/nest',
   },
 })
+console.log(123456)
 </script>
 
 <template>
-  <div class="py-24 bg-white sm:py-32">
-    测试页面
+  <div>
+    <h1>
+      测试页面
+    </h1>
+
+    <div>
+      123456
+    </div>
   </div>
 </template>

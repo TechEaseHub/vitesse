@@ -1,8 +1,9 @@
 <script setup lang="ts">
 definePage({
   meta: {
-    title: '嵌套分组',
-    icon: 'i-mdi:folder-outline',
+    title: 'Public 分组',
+    icon: 'i-mdi:earth',
+    order: 3,
   },
 })
 </script>

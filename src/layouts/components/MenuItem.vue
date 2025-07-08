@@ -1,31 +1,34 @@
 <script setup lang="ts">
-import type { MenuItem } from '~/composables/menuGenerator'
+import type { MenuItem } from '../utils/menuGenerator'
+import { useRouter } from 'vue-router'
 
 defineOptions({
   name: 'MenuItem',
 })
 
-const { item, activePath, level: menuLevel = 1 } = defineProps<{
+const { item, level: menuLevel = 1 } = defineProps<{
   item: MenuItem
-  activePath: string
   level?: number
 }>()
-
+const router = useRouter()
 const [isOpen, toggleOpen] = useToggle()
 
-const isActive = computed(() => isMenuActive(item, activePath))
+// 判断菜单项是否激活，支持动态路由
+const isActive = computed(() => isMenuActive(item))
 
-function isMenuActive(menu: MenuItem, active: string): boolean {
-  if (menu.path === active)
+function isMenuActive(menu: MenuItem): boolean {
+  // 当前路由所有 matched 路由的 path
+  const matchedPaths = router.currentRoute.value.matched.map(r => r.path)
+  if (matchedPaths.includes(menu.path))
     return true
   if (menu.children)
-    return menu.children.some(child => isMenuActive(child, active))
+    return menu.children.some(child => isMenuActive(child))
   return false
 }
 
-// 监听 activePath 变化，自动展开/收起分组菜单
-watch(() => activePath, (val) => {
-  if (item.children && isMenuActive(item, val)) {
+// 监听路由变化，自动展开/收起分组菜单
+watch(() => router.currentRoute.value.fullPath, () => {
+  if (item.children && isActive.value) {
     isOpen.value = true
   }
   else {
@@ -52,7 +55,7 @@ const [DefineMenuContent, ReuseMenuContent] = createReusableTemplate<{
   </DefineMenuContent>
 
   <li>
-    <div v-if="item.children">
+    <div v-if="item.children?.length">
       <div
         class="px-4 py-2 flex gap-2 cursor-pointer select-none transition-colors duration-200 items-center relative"
         :class="[isActive ? 'bg-blue-50 text-blue-700 font-semibold' : 'hover:bg-gray-100']"
@@ -77,13 +80,12 @@ const [DefineMenuContent, ReuseMenuContent] = createReusableTemplate<{
       <transition name="fade-slide">
         <ul
           v-show="isOpen"
-          class="m-1 ml-4 border border-blue-200 rounded-md overflow-hidden space-y-1"
+          class="m-1 ml-4 mr-0 border border-blue-200 rounded-md overflow-hidden space-y-1"
         >
           <MenuItem
             v-for="child in item.children"
             :key="child.path"
             :item="child"
-            :active-path="activePath"
             :level="menuLevel + 1"
           />
         </ul>
@@ -94,10 +96,10 @@ const [DefineMenuContent, ReuseMenuContent] = createReusableTemplate<{
       v-else
       :to="item.path"
       class="px-4 py-2 flex gap-2 select-none transition-colors duration-200 items-center relative"
-      :class="[activePath === item.path ? 'bg-blue-100 text-blue-700 font-semibold' : 'hover:bg-gray-100']"
+      :class="[isActive ? 'bg-blue-100 text-blue-700 font-semibold' : 'hover:bg-gray-100']"
     >
       <ReuseMenuContent
-        :active="activePath === item.path"
+        :active="isActive"
         :icon="item.icon"
         :title="item.title"
         :level="level"
