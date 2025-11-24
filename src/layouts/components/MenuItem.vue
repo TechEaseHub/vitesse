@@ -70,7 +70,7 @@ const [DefineMenuContent, ReuseMenuContent] = createReusableTemplate<{
           :extra="h('i', {
             class: [
               'text-base text-gray-400 transition-transform duration-200',
-              isOpen ? 'i-mdi:chevron-up' : 'i-mdi:chevron-down',
+              isOpen ? 'i-mdi-chevron-up' : 'i-mdi-chevron-down',
             ].join(' '),
           })
           "

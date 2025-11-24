@@ -34,7 +34,7 @@ async function handleSubmit() {
     <!-- 背景图 -->
     <div class="inset-0 absolute">
       <img
-        class="h-full w-full object-cover"
+        class="size-full object-cover"
         src="https://images.unsplash.com/photo-1515378791036-0648a3ef77b2"
         alt="背景"
         loading="lazy"
@@ -57,20 +57,20 @@ async function handleSubmit() {
           <!-- 账号 -->
           <div class="field">
             <i-heroicons-user class="icon" />
-            <input v-model="form.username" type="text" placeholder="账号" required class="input">
+            <input v-model="form.username" class="input" type="text" placeholder="账号" required>
           </div>
 
           <!-- 密码 -->
           <div class="field">
             <i-heroicons-lock-closed class="icon" />
-            <input v-model="form.password" type="password" placeholder="密码" required class="input">
+            <input v-model="form.password" class="input" type="password" placeholder="密码" required>
           </div>
 
           <!-- 验证码 -->
           <div class="flex gap-2">
             <div class="field flex-1">
               <i-heroicons-key class="icon" />
-              <input v-model="form.captcha" type="text" placeholder="验证码" required class="input">
+              <input v-model="form.captcha" class="input" type="text" pattern="[A-Za-z0-9]{4}" maxlength="4" placeholder="验证码" required>
             </div>
             <div class="captcha" @click="refreshCaptcha">
               {{ captchaText }}
@@ -102,7 +102,7 @@ async function handleSubmit() {
   --uno: 'text-gray-700 outline-none bg-transparent flex-1 placeholder-gray-400';
 }
 .captcha {
-  --uno: 'text-yellow-800 tracking-widest font-mono px-6 border border-yellow-300 rounded-xl bg-yellow-100 flex cursor-pointer transition-colors items-center justify-center';
+  --uno: 'text-yellow-800 tracking-widest font-mono px-6 border border-yellow-300 rounded-xl bg-yellow-100 flex cursor-pointer hover:opacity-75 transition transition-colors items-center justify-center';
 }
 .btn {
   --uno: 'text-white font-semibold py-3 rounded-xl w-full cursor-pointer shadow-md transition-all from-blue-500 to-blue-600 bg-linear-to-r disabled:opacity-60 disabled:cursor-not-allowed hover:shadow-lg';

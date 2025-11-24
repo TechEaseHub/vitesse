@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <title>课表生成示例</title>
+    <script src="https://cdn.jsdelivr.net/npm/@unocss/reset/tailwind.css"></script>
+    <script src="https://cdn.jsdelivr.net/npm/unocss@0.50.2/dist/unocss.min.js"></script>
+    <style>
+      /* 临时自定义 */
+      .table-fixed {
+        table-layout: fixed;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 min-h-screen p-6 font-sans">
+    <h1 class="text-3xl font-bold mb-6 text-center">智能课表自动生成工具（简易版）</h1>
+
+    <form id="configForm" class="max-w-xl mx-auto space-y-4 p-4 bg-white rounded shadow">
+      <div>
+        <label for="gradeCount" class="block font-medium mb-1">年级数量</label>
+        <input id="gradeCount" type="number" min="1" max="10" value="3" class="input input-bordered w-full" />
+      </div>
+
+      <div>
+        <label for="classPerGrade" class="block font-medium mb-1">每个年级班级数量</label>
+        <input id="classPerGrade" type="number" min="1" max="10" value="2" class="input input-bordered w-full" />
+      </div>
+
+      <div>
+        <label for="teacherCount" class="block font-medium mb-1">老师数量（假设全部同科目）</label>
+        <input id="teacherCount" type="number" min="1" max="20" value="4" class="input input-bordered w-full" />
+      </div>
+
+      <button type="submit" class="btn btn-primary w-full py-2 mt-2">生成课表</button>
+    </form>
+
+    <section id="scheduleSection" class="max-w-5xl mx-auto mt-10 hidden">
+      <h2 class="text-2xl font-semibold mb-4">生成的课表</h2>
+      <div class="overflow-x-auto">
+        <table class="table-fixed border border-gray-300 rounded shadow-sm">
+          <thead class="bg-gray-100">
+            <tr>
+              <th class="border border-gray-300 p-2 w-24">年级/班级</th>
+              <th class="border border-gray-300 p-2">周一</th>
+              <th class="border border-gray-300 p-2">周二</th>
+              <th class="border border-gray-300 p-2">周三</th>
+              <th class="border border-gray-300 p-2">周四</th>
+              <th class="border border-gray-300 p-2">周五</th>
+            </tr>
+          </thead>
+          <tbody id="scheduleBody" class="text-center">
+            <!-- 动态生成内容 -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <script>
+      const form = document.getElementById('configForm')
+      const scheduleSection = document.getElementById('scheduleSection')
+      const scheduleBody = document.getElementById('scheduleBody')
+
+      // 简单课程和老师假设
+      const subjects = ['数学', '英语', '物理']
+      const periodsPerDay = 4 // 每天5节课
+
+      function getRandomInt(max) {
+        return Math.floor(Math.random() * max)
+      }
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault()
+        scheduleBody.innerHTML = ''
+        scheduleSection.classList.remove('hidden')
+
+        const gradeCount = parseInt(form.gradeCount.value)
+        const classPerGrade = parseInt(form.classPerGrade.value)
+        const teacherCount = parseInt(form.teacherCount.value)
+
+        // 简单校验老师是否足够（粗略）
+        if (teacherCount < gradeCount * classPerGrade) {
+          alert('老师数量可能不足，生成结果仅供参考。')
+        }
+
+        for (let g = 1; g <= gradeCount; g++) {
+          for (let c = 1; c <= classPerGrade; c++) {
+            const tr = document.createElement('tr')
+            const gradeClassCell = document.createElement('td')
+            gradeClassCell.className = 'border border-gray-300 p-2 font-medium'
+            gradeClassCell.textContent = `${g}年级${c}班`
+            tr.appendChild(gradeClassCell)
+
+            // 一周五天，每天生成一个随机科目+老师号（简单模拟）
+            for (let day = 1; day <= 5; day++) {
+              const td = document.createElement('td')
+              td.className = 'border border-gray-300 p-2'
+
+              // 随机科目和老师
+              const subject = subjects[getRandomInt(subjects.length)]
+              const teacherId = getRandomInt(teacherCount) + 1
+
+              td.innerHTML = `${subject}<br><small>老师${teacherId}</small>`
+              tr.appendChild(td)
+            }
+
+            scheduleBody.appendChild(tr)
+          }
+        }
+      })
+    </script>
+  </body>
+</html>
