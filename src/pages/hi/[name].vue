@@ -5,7 +5,7 @@ const router = useRouter()
 
 <template>
   <div>
-    <div i-carbon-pedestrian text-4xl inline-block />
+    <i-carbon-pedestrian text-4xl inline-block />
     <p>
       Hi, {{ params.name }}
     </p>
