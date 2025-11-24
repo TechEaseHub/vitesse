@@ -33,12 +33,18 @@ const router = createRouter({
       return { el: to.hash }
     return { top: 0 }
   },
-
 })
 
 // 热更新
 if (import.meta.hot) {
-  handleHotUpdate(router)
+  const url = new URL(location.href)
+  const isReloaded = url.searchParams.has('__reload')
+
+  if (!isReloaded) {
+    handleHotUpdate(router)
+    url.searchParams.set('__reload', '1')
+    location.href = url.toString()
+  }
 }
 
 export default router
